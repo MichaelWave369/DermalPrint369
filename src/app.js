@@ -119,7 +119,7 @@ function App(){
  const addEvent=(message,type="info")=>setEvents(xs=>[{time:stamp(),message,type},...xs].slice(0,30));
  const message=t=>{setToast(t);setTimeout(()=>setToast(""),3600);};
  const resetApproval=()=>{
-   setArtist(false);setClient(false);setDryRun(false);setStatus("IDLE");setProgress(0);setReceipt(null);
+   setArtist(false);setClient(false);setVerified(false);setDryRun(false);setStatus("IDLE");setProgress(0);setReceipt(null);
  };
  function changeDesign(update){if(status==="RUNNING")return;update();resetApproval();}
  function exportDesign(){
@@ -165,6 +165,7 @@ function App(){
    setIntake(false);setArtist(false);setClient(false);setDryRun(false);setSessionId(randId());
    setEvents([{time:stamp(),message:"New demo session initialized",type:"info"}]);message("New demo session initialized");
  }
+ useEffect(()=>{if(status==="RUNNING"&&!gates){setStatus("PAUSED");addEvent("Approval gate revoked; virtual applicator retracted","warn");}},[gates,status]);
  useEffect(()=>{
   if(status!=="RUNNING")return;
   const t=setInterval(()=>setProgress(n=>Math.min(100,n+2)),115);
@@ -257,7 +258,7 @@ function App(){
  e("div",{className:"session-right"},
  e(Panel,null,e("div",{className:"panel-heading"},e("h3",null,"Approved geometry"),Tag({children:"VIRTUAL",tone:"teal"})),e(DotPreview,{preset,density,scale,previewOnly:true}),e("div",{className:"session-design-name"},e("strong",null,active.name),e("small",null,zone+" / "+dotCount+" dots")),Button({children:"Edit design",variant:"secondary",small:true,disabled:status==="RUNNING",onClick:()=>setPage("design")})),
  e(Panel,null,e("div",{className:"panel-heading"},e("h3",null,"Audit trail"),e("span",{className:"muted tiny"},events.length+" events")),e("div",{className:"event-list"},...events.slice(0,9).map((ev,i)=>e("div",{className:"event",key:i},e("span",{className:"event-dot "+ev.type}),e("div",null,e("strong",null,ev.message),e("small",null,new Date(ev.time).toLocaleTimeString()))))))
- ));
+ ))));
  }
  function materials(){return e(React.Fragment,null,
  H2({eyebrow:"MATERIAL TRACEABILITY / DEMO DATA",title:"Material ledger",description:"Every material should be attributable to a known lot. This release uses invented identifiers and contains no supplier or sterilization certification."}),
@@ -274,7 +275,7 @@ function App(){
  ["05","Degradation","Photochemical breakdown and removal byproducts where relevant."],
  ["06","Chain of custody","Tamper evidence, packaging history and recall traceability."]
  ].map(([n,title,detail])=>e("div",{className:"evidence",key:n},e("span",{className:"evidence-num"},n),e("strong",null,title),e("p",null,detail))))
- ));
+ )));
  }
  function safety(){return e(React.Fragment,null,
  H2({eyebrow:"HAZARD MODEL / NOT VALIDATED",title:"Safety architecture",description:"The system is not safe because it is automated. Hazards must be reduced, verified, documented, and independently reviewed."}),
@@ -295,7 +296,7 @@ function App(){
  e("div",{className:"two-col"},
  e(Panel,null,e("div",{className:"eyebrow"},"ARTIST-CENTERED"),e("h3",null,"The artist remains the artist."),e("p",null,"The machine never owns the aesthetic decision. Artist judgment, attribution, licensing and the client's relationship with the artist are central to the concept."),e("p",null,"The client must approve the exact size, orientation, design, placement and materials, and must be able to stop.")),
  e(Panel,null,e("div",{className:"eyebrow"},"BOUNDARIES"),e("h3",null,"Not a home tattoo appliance."),e("p",null,"This prototype does not interact with robotic hardware, control needles or measure skin. Further development must involve licensed artists, independent laboratory partners, product safety experts and jurisdiction-specific counsel."),e("p",null,"No healthy ink, hypoallergenic, less painful or safer-to-remove claims without appropriate evidence."))),
- e("div",{className:"source-line"},"Based on DermalPrint369 / MercyInk Studio Master Product + Safety Architecture Spec v0.1, June 4, 2026 · PHI369 Labs."));
+ e("div",{className:"source-line"},"Based on DermalPrint369 / MercyInk Studio Master Product + Safety Architecture Spec v0.1, June 4, 2026 · PHI369 Labs.")));
  }
  return e("div",{className:"app"},
  e("aside",{className:"sidebar"},
@@ -306,6 +307,6 @@ function App(){
  e("header",{className:"topbar"},e("div",{className:"breadcrumb"},"WORKSPACE ",e("span",null,"/"),e("strong",null,pageName)),e("div",{className:"top-right"},Tag({children:"SIMULATION ONLY",tone:"teal"}),e("a",{href:"https://github.com/MichaelWave369/DermalPrint369",target:"_blank",rel:"noopener noreferrer",className:"github-link"},"VIEW SOURCE ↗"))),
  e("main",{className:"content"},page==="overview"?overview():page==="design"?design():page==="session"?session():page==="materials"?materials():page==="safety"?safety():roadmap()),
  e("footer",{className:"app-footer"},e("span",null,"DERMALPRINT369 · MERCYINK STUDIO · PHI369 LABS"),e("span",null,"Concept interface · No live body-contact controls · v"+APP_VERSION))),
- toast&&e("div",{className:"toast",role:"status"},icon("check",17),toast));
+ toast&&e("div",{className:"toast",role:"status"},icon("check",17),toast)));
 }
 createRoot(document.getElementById("root")).render(e(App));
