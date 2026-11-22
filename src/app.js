@@ -302,11 +302,11 @@ function App(){
  e("aside",{className:"sidebar"},
  e("div",{className:"brand"},e("div",{className:"brand-symbol"},"Φ"),e("div",null,e("strong",null,"DERMALPRINT",e("span",null,"369")),e("small",null,"MERCYINK STUDIO"))),
  e("div",{className:"sidebar-section"},e("small",null,"WORKSPACE"),...NAV.map(([id,title,glyph])=>navBtn(id,title,glyph))),
- e("div",{className:"sidebar-bottom"},e("div",{className:"side-card"},e("div",{className:"side-dot"}),e("strong",null,"Research prototype"),e("p",null,"No physical tattooing. No hardware connection. No clinical claims.")),e("div",{className:"sidebar-footer"},"PHI369 LABS",e("span",null,"OPEN RESEARCH / "+APP_VERSION))),
+ e("div",{className:"sidebar-bottom"},e("div",{className:"side-card"},e("div",{className:"side-dot"}),e("strong",null,"Research prototype"),e("p",null,"No physical tattooing. No hardware connection. No clinical claims.")),e("div",{className:"sidebar-footer"},"PHI369 LABS",e("span",null,"OPEN RESEARCH / "+APP_VERSION)))),
  e("div",{className:"main"},
  e("header",{className:"topbar"},e("div",{className:"breadcrumb"},"WORKSPACE ",e("span",null,"/"),e("strong",null,pageName)),e("div",{className:"top-right"},Tag({children:"SIMULATION ONLY",tone:"teal"}),e("a",{href:"https://github.com/MichaelWave369/DermalPrint369",target:"_blank",rel:"noopener noreferrer",className:"github-link"},"VIEW SOURCE ↗"))),
  e("main",{className:"content"},page==="overview"?overview():page==="design"?design():page==="session"?session():page==="materials"?materials():page==="safety"?safety():roadmap()),
  e("footer",{className:"app-footer"},e("span",null,"DERMALPRINT369 · MERCYINK STUDIO · PHI369 LABS"),e("span",null,"Concept interface · No live body-contact controls · v"+APP_VERSION))),
- toast&&e("div",{className:"toast",role:"status"},icon("check",17),toast)));
+ toast&&e("div",{className:"toast",role:"status"},icon("check",17),toast));
 }
 createRoot(document.getElementById("root")).render(e(App));
